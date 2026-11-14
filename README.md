@@ -802,7 +802,7 @@ Infineon IKWH75N65EH7 (650 V TRENCHSTOP IGBT7) datasheet.
 
 If you use this repository, please cite it as:
 
-N. Subramanian, Sahas Vishanth M. V., Tanukasree R., and G. Kanimozhi,
+ Tanukasree R, N. Subramanian, Sahas Vishanth M. V., and Dr. G. Kanimozhi,
 
 "Isolated Single-Stage Bidirectional V2V EV Charging Converter: PI, ISMC and Fuzzy Current Control,"
 
