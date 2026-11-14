@@ -234,27 +234,111 @@ The PWM and NPWM assignments are swapped, so power flows from battery B to batte
 | HFT turns ratio | 1:1 |
 | Switch model (loss study) | Infineon IKWH75N65EH7 IGBT |
 
-## 1. Battery-side filters
-The filter inductor and capacitor are sized for a 5 % current ripple at D=0.57:
-$$L_F = \frac{V_L\,D}{\Delta I_L\, f_S}, \qquad C_F = \frac{\Delta I}{8\, f_S\, \Delta V}$$
-EV1 side (IL,rated = 63.5 A, VL = 350 V):
-$$L_{F,A} = \frac{350 \times 0.57}{0.05 \times 63.5 \times 20\times10^{3}} = 3.14\ \text{mH}$$
-$$\frac{\Delta V}{V} = \frac{0.05 \times 63.5}{8 \times 20\times10^{3} \times 2\times10^{-6} \times 350} \approx 2.8\% \approx 3\% \quad (C_{F,A} = 2\ \mu\text{F})$$
-EV2 side (IL,rated = 52.9 A, VL = 450 V):
-$$L_{F,B} = \frac{450 \times 0.57}{0.05 \times 52.9 \times 20\times10^{3}} = 4.8\ \text{mH}$$
-$$\frac{\Delta V}{V} = \frac{0.05 \times 52.9}{8 \times 20\times10^{3} \times 1.3\times10^{-6} \times 450} \approx 2.8\% \approx 3\% \quad (C_{F,B} = 1.3\ \mu\text{F})$$
-## 2. Resonant tank
-$$f_R = \frac{1}{2\pi\sqrt{L_R C_R}} = \frac{1}{2\pi\sqrt{0.3015\times10^{-6} \times 0.21\times10^{-3}}} \approx 20\ \text{kHz} = f_S$$
-The switching frequency is set equal to the resonant frequency. The open-loop gain study confirms that the gain is highest at fS/fR=1.
-## 3. Voltage gain (idealized)
-Treat the series tank and the 1:1 HFT, operated at resonance, as the energy-transfer path of a Ćuk converter with average transfer voltage VT. Volt–second balance on the two filter inductors gives:
-$$D\,V_{S,A} + (1-D)(V_{S,A}-V_T) = 0 \;\Rightarrow\; V_T = \frac{V_{S,A}}{1-D}$$
-$$D\,(V_T - V_{S,B}) - (1-D)\,V_{S,B} = 0 \;\Rightarrow\; V_{S,B} = D\,V_T$$
-$$\boxed{\frac{V_{S,B}}{V_{S,A}} = \frac{D}{1-D}\ \ (\text{Mode 1}), \qquad \frac{V_{S,A}}{V_{S,B}} = \frac{1-D}{D}\ \ (\text{Mode 2})}$$
-These relations assume lossless components, unity tank gain and continuous inductor current. They locate the operating region; the actual duty ratios come from simulation (see Results).
-## 4. Equivalent load for the open-loop tests
-$$R_L = \frac{V_{nom}^2}{P_{rated}}: \qquad R_{L,EV2} = \frac{450^2}{24\,000} = 8.4375\ \Omega, \qquad R_{L,EV1} = \frac{350^2}{24\,000} = 5.1042\ \Omega$$
+## 🖉 1. Battery-side filters
 
+The filter inductor and capacitor are sized for a 5 % current ripple at \(D=0.57\):
+
+$$
+L_F = \frac{V_L\,D}{\Delta I_L\, f_S},
+\qquad
+C_F = \frac{\Delta I}{8\, f_S\, \Delta V}
+$$
+
+**EV1 side** (\(I_{L,rated}=63.5\text{ A},\ V_L=350\text{ V}\)):
+
+$$
+L_{F,A} =
+\frac{350 \times 0.57}
+{0.05 \times 63.5 \times 20\times10^{3}}
+= 3.14\ \text{mH}
+$$
+
+$$
+\frac{\Delta V}{V} =
+\frac{0.05 \times 63.5}
+{8 \times 20\times10^{3} \times 2\times10^{-6} \times 350}
+\approx 2.8\% \approx 3\%
+\quad (C_{F,A}=2\ \mu\text{F})
+$$
+
+**EV2 side** (\(I_{L,rated}=52.9\text{ A},\ V_L=450\text{ V}\)):
+
+$$
+L_{F,B} =
+\frac{450 \times 0.57}
+{0.05 \times 52.9 \times 20\times10^{3}}
+= 4.8\ \text{mH}
+$$
+
+$$
+\frac{\Delta V}{V} =
+\frac{0.05 \times 52.9}
+{8 \times 20\times10^{3} \times 1.3\times10^{-6} \times 450}
+\approx 2.8\% \approx 3\%
+\quad (C_{F,B}=1.3\ \mu\text{F})
+$$
+
+## 2. Resonant tank
+
+$$
+f_R =
+\frac{1}{2\pi\sqrt{L_R C_R}}
+=
+\frac{1}{2\pi\sqrt{0.3015\times10^{-6} \times 0.21\times10^{-3}}}
+\approx 20\ \text{kHz} = f_S
+$$
+
+The switching frequency is set equal to the resonant frequency. The open-loop gain study confirms that the gain is highest at \(f_S/f_R=1\).
+
+## 3. Voltage gain (idealized)
+
+Treat the series tank and the 1:1 HFT, operated at resonance, as the energy-transfer path of a Ćuk converter with average transfer voltage \(V_T\). Volt–second balance on the two filter inductors gives:
+
+$$
+D\,V_{S,A} + (1-D)(V_{S,A}-V_T) = 0
+$$
+
+$$
+\Rightarrow V_T = \frac{V_{S,A}}{1-D}
+$$
+
+$$
+D\,(V_T - V_{S,B}) - (1-D)\,V_{S,B} = 0
+$$
+
+$$
+\Rightarrow V_{S,B} = D\,V_T
+$$
+
+$$
+\boxed{
+\frac{V_{S,B}}{V_{S,A}} = \frac{D}{1-D}
+\quad (\text{Mode 1}),
+\qquad
+\frac{V_{S,A}}{V_{S,B}} = \frac{1-D}{D}
+\quad (\text{Mode 2})
+}
+$$
+
+These relations assume lossless components, unity tank gain and continuous inductor current. They locate the operating region; the actual duty ratios come from simulation (see Results).
+
+## 4. Equivalent load for the open-loop tests
+
+$$
+R_L = \frac{V_{nom}^2}{P_{rated}}
+$$
+
+$$
+R_{L,EV2} =
+\frac{450^2}{24\,000}
+= 8.4375\ \Omega
+$$
+
+$$
+R_{L,EV1} =
+\frac{350^2}{24\,000}
+= 5.1042\ \Omega
+$$
 
 ## Controller Design
 
