@@ -380,9 +380,10 @@ Mamdani system, file `ev_v2v.fis`.
 
 Inputs are the error e(k) and the change in error:
 
-\[
+$$
 \Delta e(k)=e(k)-e(k-1)
-\]
+\
+$$
 
 Both inputs are normalized to [-1, 1]. The output is the duty command on [0, 1].
 
@@ -418,11 +419,7 @@ Rows are error, columns are del_error:
 
 Inference uses AND = min, OR = max, implication = min and aggregation = max, with centroid defuzzification:
 
-\[
-u^*=
-\frac{\int_0^1u\mu_{agg}(u)\,du}
-{\int_0^1\mu_{agg}(u)\,du}
-\]
+$$u^* = \frac{\int_0^1 u\,\mu_{agg}(u)\,du}{\int_0^1 \mu_{agg}(u)\,du}$$
 
 ---
 
