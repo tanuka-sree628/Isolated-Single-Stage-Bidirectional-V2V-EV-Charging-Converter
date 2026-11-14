@@ -234,127 +234,27 @@ The PWM and NPWM assignments are swapped, so power flows from battery B to batte
 | HFT turns ratio | 1:1 |
 | Switch model (loss study) | Infineon IKWH75N65EH7 IGBT |
 
-### 1. Battery-Side Filters
-
-The filter inductor and capacitor are sized for a 5% current ripple at D = 0.57.
-
-\[
-L_F=\frac{V_LD}{\Delta I_Lf_S}
-\]
-
-\[
-C_F=\frac{\Delta I}{8f_S\Delta V}
-\]
-
-**EV1 side (IL,rated = 63.5 A, VL = 350 V):**
-
-\[
-L_{F,A}=
-\frac{350\times0.57}
-{0.05\times63.5\times20\times10^3}
-=3.14\text{ mH}
-\]
-
-\[
-\frac{\Delta V}{V}
-=
-\frac{0.05\times63.5}
-{8\times20\times10^3\times2\times10^{-6}\times350}
-\approx2.8\%\approx3\%
-\]
-
-\[
-C_{F,A}=2\ \mu F
-\]
-
-**EV2 side (IL,rated = 52.9 A, VL = 450 V):**
-
-\[
-L_{F,B}=
-\frac{450\times0.57}
-{0.05\times52.9\times20\times10^3}
-=4.8\text{ mH}
-\]
-
-\[
-\frac{\Delta V}{V}
-=
-\frac{0.05\times52.9}
-{8\times20\times10^3\times1.3\times10^{-6}\times450}
-\approx2.8\%\approx3\%
-\]
-
-\[
-C_{F,B}=1.3\ \mu F
-\]
-
-### 2. Resonant Tank
-
-\[
-f_R=\frac{1}{2\pi\sqrt{L_RC_R}}
-\]
-
-\[
-f_R=
-\frac{1}{2\pi\sqrt{0.3015\times10^{-6}\times0.21\times10^{-3}}}
-\approx20\text{ kHz}=f_S
-\]
-
-The switching frequency is set equal to the resonant frequency. The open-loop gain study confirms that the gain is highest at fS/fR = 1.
-
-### 3. Voltage Gain (Idealized)
-
-Treat the series tank and the 1:1 HFT, operated at resonance, as the energy-transfer path of a Ćuk converter with average transfer voltage VT.
-
-Volt-second balance on the two filter inductors gives:
-
-\[
-DV_{S,A}+(1-D)(V_{S,A}-V_T)=0
-\]
-
-\[
-\Rightarrow V_T=\frac{V_{S,A}}{1-D}
-\]
-
-\[
-D(V_T-V_{S,B})-(1-D)V_{S,B}=0
-\]
-
-\[
-\Rightarrow V_{S,B}=DV_T
-\]
-
-Therefore:
-
-**Mode 1:**
-
-\[
-\boxed{\frac{V_{S,B}}{V_{S,A}}=\frac{D}{1-D}}
-\]
-
-**Mode 2:**
-
-\[
-\boxed{\frac{V_{S,A}}{V_{S,B}}=\frac{1-D}{D}}
-\]
-
+## 1. Battery-side filters
+The filter inductor and capacitor are sized for a 5 % current ripple at D=0.57:
+$$L_F = \frac{V_L\,D}{\Delta I_L\, f_S}, \qquad C_F = \frac{\Delta I}{8\, f_S\, \Delta V}$$
+EV1 side (IL,rated = 63.5 A, VL = 350 V):
+$$L_{F,A} = \frac{350 \times 0.57}{0.05 \times 63.5 \times 20\times10^{3}} = 3.14\ \text{mH}$$
+$$\frac{\Delta V}{V} = \frac{0.05 \times 63.5}{8 \times 20\times10^{3} \times 2\times10^{-6} \times 350} \approx 2.8\% \approx 3\% \quad (C_{F,A} = 2\ \mu\text{F})$$
+EV2 side (IL,rated = 52.9 A, VL = 450 V):
+$$L_{F,B} = \frac{450 \times 0.57}{0.05 \times 52.9 \times 20\times10^{3}} = 4.8\ \text{mH}$$
+$$\frac{\Delta V}{V} = \frac{0.05 \times 52.9}{8 \times 20\times10^{3} \times 1.3\times10^{-6} \times 450} \approx 2.8\% \approx 3\% \quad (C_{F,B} = 1.3\ \mu\text{F})$$
+## 2. Resonant tank
+$$f_R = \frac{1}{2\pi\sqrt{L_R C_R}} = \frac{1}{2\pi\sqrt{0.3015\times10^{-6} \times 0.21\times10^{-3}}} \approx 20\ \text{kHz} = f_S$$
+The switching frequency is set equal to the resonant frequency. The open-loop gain study confirms that the gain is highest at fS/fR=1.
+## 3. Voltage gain (idealized)
+Treat the series tank and the 1:1 HFT, operated at resonance, as the energy-transfer path of a Ćuk converter with average transfer voltage VT. Volt–second balance on the two filter inductors gives:
+$$D\,V_{S,A} + (1-D)(V_{S,A}-V_T) = 0 \;\Rightarrow\; V_T = \frac{V_{S,A}}{1-D}$$
+$$D\,(V_T - V_{S,B}) - (1-D)\,V_{S,B} = 0 \;\Rightarrow\; V_{S,B} = D\,V_T$$
+$$\boxed{\frac{V_{S,B}}{V_{S,A}} = \frac{D}{1-D}\ \ (\text{Mode 1}), \qquad \frac{V_{S,A}}{V_{S,B}} = \frac{1-D}{D}\ \ (\text{Mode 2})}$$
 These relations assume lossless components, unity tank gain and continuous inductor current. They locate the operating region; the actual duty ratios come from simulation (see Results).
+## 4. Equivalent load for the open-loop tests
+$$R_L = \frac{V_{nom}^2}{P_{rated}}: \qquad R_{L,EV2} = \frac{450^2}{24\,000} = 8.4375\ \Omega, \qquad R_{L,EV1} = \frac{350^2}{24\,000} = 5.1042\ \Omega$$
 
-### 4. Equivalent Load for the Open-Loop Tests
-
-\[
-R_L=\frac{V_{nom}^2}{P_{rated}}
-\]
-
-\[
-R_{L,EV2}=\frac{450^2}{24000}=8.4375\ \Omega
-\]
-
-\[
-R_{L,EV1}=\frac{350^2}{24000}=5.1042\ \Omega
-\]
-
----
 
 ## Controller Design
 
@@ -366,9 +266,7 @@ The regulated current is IB2 in Mode 1 and IB1 in Mode 2. Only the control law c
 
 ### PI Controller
 
-\[
-u(t)=K_pe(t)+K_i\int_0^t e(\tau)d\tau
-\]
+$$u(t) = K_p\,e(t) + K_i \int_0^t e(\tau)\,d\tau$$
 
 | Parameter | Value |
 |---|---:|
@@ -380,13 +278,7 @@ u(t)=K_pe(t)+K_i\int_0^t e(\tau)d\tau
 
 Sliding surface and boundary-layer control law:
 
-\[
-s(t)=e(t)+\lambda\int_0^t e(\tau)d\tau
-\]
-
-\[
-D_{cmd}=D_0+k\operatorname{sat}\left(\frac{s}{\phi}\right)
-\]
+$$s(t) = e(t) + \lambda \int_0^t e(\tau)\,d\tau, \qquad D_{cmd} = D_0 + k\,\text{sat}\!\left(\frac{s}{\phi}\right)$$
 
 | Parameter | Value | Role |
 |---|---:|---|
