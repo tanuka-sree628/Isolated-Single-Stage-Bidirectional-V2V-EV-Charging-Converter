@@ -83,12 +83,8 @@ On this topology the project:
 │   └── plot_3dim.m
 ├── documents/
 │   ├── final_report_fyp.docx
-│   ├── fyp conference.docx / .pdf
-│   ├── fyp_journal.docx
 │   ├── Final Review FYP.pptx
-│   ├── Fyp_poster.docx
-│   ├── FYP.xlsx
-│   └── drawing.pdf
+│   └── Fyp_poster.docx
 └── github_repo/
     └── docs/
         └── images/
