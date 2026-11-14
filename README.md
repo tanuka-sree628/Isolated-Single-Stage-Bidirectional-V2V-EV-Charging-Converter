@@ -234,7 +234,7 @@ The PWM and NPWM assignments are swapped, so power flows from battery B to batte
 | HFT turns ratio | 1:1 |
 | Switch model (loss study) | Infineon IKWH75N65EH7 IGBT |
 
-## 🖉 1. Battery-side filters
+##  1. Battery-side filters
 
 The filter inductor and capacitor are sized for a 5 % current ripple at \(D=0.57\):
 
@@ -242,9 +242,9 @@ $$
 L_F = \frac{V_L\,D}{\Delta I_L\, f_S},
 \qquad
 C_F = \frac{\Delta I}{8\, f_S\, \Delta V}
-$$
 
-**EV1 side** (\(I_{L,rated}=63.5\text{ A},\ V_L=350\text{ V}\)):
+$EV1 side (IL,rated = 63.5 A, VL = 350 V):
+
 
 $$
 L_{F,A} =
@@ -261,7 +261,8 @@ $$
 \quad (C_{F,A}=2\ \mu\text{F})
 $$
 
-**EV2 side** (\(I_{L,rated}=52.9\text{ A},\ V_L=450\text{ V}\)):
+EV2 side (IL,rated = 52.9 A, VL = 450 V):
+
 
 $$
 L_{F,B} =
